@@ -63,3 +63,15 @@ Next improvements: contact email, server-side validation and trimming, duplicate
 ## What I practiced
 
 n8n form triggers, JSON fields and values, dynamic expressions, field mapping, Supabase integration, database permissions, and test versus production form URLs.
+
+## Screenshots
+
+### Automation workflow
+Receives a quote request, builds a personalized message, and saves the contact to Supabase.
+
+![Contact capture workflow](workflow.png)
+
+### Database results
+Three fictional sample contacts saved during testing.
+
+![Contacts saved in Supabase](database-results.png)
