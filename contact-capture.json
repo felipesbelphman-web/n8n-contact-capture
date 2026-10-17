@@ -1,0 +1,120 @@
+{
+  "name": "Contact Capture — n8n & Supabase",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Request a quote",
+        "formDescription": "Tell us which service you need.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "service",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bd40ac50-9f86-4f76-92f8-7c0465275b89",
+      "name": "Receive contact form",
+      "webhookId": "edc6a391-f9d9-4b56-ad97-ad6d179be142"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe56ca3e-ea6f-4101-aca7-ffb3d9ba5201",
+              "name": "message",
+              "value": "=Hi, {{ $json.name }}! We've received your quote request for {{ $json.service }}.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "73e23c93-ec59-4f5d-a956-a2e49157e6e6",
+      "name": "Build confirmation message"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "projectRef": "YOUR_SUPABASE_PROJECT_REF",
+        "tableId": "contacts",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $json.name }}"
+            },
+            {
+              "fieldId": "service",
+              "fieldValue": "={{ $json.service }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "ab0a01c6-5673-4f93-8ca6-920bd1721c5f",
+      "name": "Save contact to Supabase"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive contact form": {
+      "main": [
+        [
+          {
+            "node": "Build confirmation message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build confirmation message": {
+      "main": [
+        [
+          {
+            "node": "Save contact to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
